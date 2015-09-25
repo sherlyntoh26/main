@@ -119,6 +119,26 @@ public class MainLogicTest {
 		List<Event> eventList = mainLogic.execute("view");
 		
 		assertTrue("should have all event", eventList.size() > 1);
+		
 	}
+	
+	@Test
+	public void executeEventListShouldBeInDecreasingPriority() {
+		MainLogic mainLogic = new MainLogic();
+		List<Event> eventList = mainLogic.execute("view");
+		
+		boolean isDecreasing = true;
+		Priority previousPriority = Priority.VERY_HIGH;
+		for(Event event : eventList){
+			if(event.getPriority().compareTo(previousPriority) > 0){
+				isDecreasing = false;
+			}
+			previousPriority = event.getPriority();
+		}
+		
+		assertTrue("should be in decreasing priority", isDecreasing);
+		
+	}
+	
 
 }

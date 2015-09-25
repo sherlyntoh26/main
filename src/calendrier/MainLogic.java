@@ -1,6 +1,8 @@
 package calendrier;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import stub.EventHandlerStub;
@@ -45,6 +47,11 @@ public class MainLogic {
 				}
 				else{
 					eventList = eventHandler.getAllEvents();
+					Collections.sort(eventList, new Comparator<Event>(){
+	                     public int compare(Event s1,Event s2){
+	                           // Write your logic here.
+	                    	 return s2.getPriority().compareTo(s1.getPriority());
+	                     }});
 				}
 			}
 		}

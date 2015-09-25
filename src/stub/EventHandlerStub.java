@@ -26,7 +26,7 @@ public class EventHandlerStub extends EventHandler {
 		Event viewEvent = new Event();
 		viewEvent.setId("viewDetails");
 		viewEvent.setTitle("viewDetails");
-		viewEvent.setPriority(Priority.LOW);
+		viewEvent.setPriority(Priority.HIGH);
 		events.add(viewEvent);
 	}
 	
