@@ -21,27 +21,38 @@ public class MainLogic {
 
 	public List<Event> execute(String command) {
 		List<Event> eventList = new ArrayList<>();
+		Event event = null;
 		ParsedCommand parsedCommand = parser.parse(command);
 
 		if (parsedCommand != null) {
 			if (parsedCommand.getCommand() == Command.ADD) {
 				String identifier = parsedCommand.getIdentifier();
-				Event event = eventHandler.add(identifier, parsedCommand.getDetails());
+				event = eventHandler.add(identifier, parsedCommand.getDetails());
 			} else if (parsedCommand.getCommand() == Command.DELETE) {
 				String identifier = parsedCommand.getIdentifier();
-				Event event = eventHandler.remove(identifier, parsedCommand.getDetails());
+				event = eventHandler.remove(identifier, parsedCommand.getDetails());
 			} else if (parsedCommand.getCommand() == Command.UPDATE) {
 				String identifier = parsedCommand.getIdentifier();
-				Event event = eventHandler.update(identifier, parsedCommand.getDetails());
+				event = eventHandler.update(identifier, parsedCommand.getDetails());
+			} else if (parsedCommand.getCommand() == Command.VIEW) {
+				String identifier = parsedCommand.getIdentifier();
+				event = eventHandler.view(identifier);
+			}
+			
+			if(parsedCommand.getCommand() == Command.VIEW){
+				eventList.add(event);
+			}
+			else{
+				eventList = eventHandler.getAllEvents();		
 			}
 		}
-		eventList = eventHandler.getAllEvents();
+		
 
 		return eventList;
 	}
 
 	public List<Event> getEvents() {
-		return null;
+		return eventHandler.getAllEvents();
 	}
 
 	public ParsedCommand getParsedCommand(String command) {

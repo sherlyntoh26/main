@@ -22,6 +22,12 @@ public class EventHandlerStub extends EventHandler {
 		updateEvent.setTitle("updated");
 		updateEvent.setPriority(Priority.LOW);
 		events.add(updateEvent);
+		
+		Event viewEvent = new Event();
+		viewEvent.setId("viewDetails");
+		viewEvent.setTitle("viewDetails");
+		viewEvent.setPriority(Priority.LOW);
+		events.add(viewEvent);
 	}
 	
 	@Override
@@ -48,6 +54,19 @@ public class EventHandlerStub extends EventHandler {
 	}
 	
 	
+
+	@Override
+	public Event view(String identifier) {
+		// TODO Auto-generated method stub
+		Event viewEvent = null;
+		for(Event event : events){
+			if(event.getTitle().equals(identifier)){
+				viewEvent = event;
+				break;
+			}
+		}
+		return viewEvent;
+	}
 
 	@Override
 	public Event update(String identifier, Event event) {

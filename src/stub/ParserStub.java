@@ -45,6 +45,11 @@ public class ParserStub extends Parser{
 			parsedCommand.setCommand(Command.UPDATE);
 			parsedCommand.setEventDetails(event);
 		}
+		else if(command.equals("view viewDetails")){
+			parsedCommand = new ParsedCommand();
+			parsedCommand.setIdentifier("viewDetails");
+			parsedCommand.setCommand(Command.VIEW);
+		}
 		return parsedCommand;
 	}
 	

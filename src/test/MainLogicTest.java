@@ -96,5 +96,21 @@ public class MainLogicTest {
 		}
 		assertTrue("\"updated\" should have \"HIGH\" priority", isHigh);
 	}
+	
+	@Test
+	public void executeEventListShouldHaveOnlyOneEvent() {
+		MainLogic mainLogic = new MainLogic();
+		List<Event> eventList = mainLogic.execute("view viewDetails");
+		boolean isViewEvent = false;
+		assertTrue("should only have 1 event", eventList.size() == 1);
+		
+		for (Event event : eventList) {
+			if (event.getTitle().equals("viewDetails")) {
+				isViewEvent = true;
+				break;
+			}
+		}
+		assertTrue("should only have \"viewDetails\"", isViewEvent);
+	}
 
 }
