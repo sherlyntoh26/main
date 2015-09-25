@@ -9,12 +9,16 @@ public class ParsedCommand {
 		return command;
 	}
 
-	public Object getIdentifier() {
+	public String getIdentifier() {
 		return identifier;
 	}
 
 	public Event getDetails() {
 		return eventDetails;
+	}
+	
+	public String getPath(){
+		return identifier;
 	}
 
 	public void setPath(String path) {
@@ -27,5 +31,9 @@ public class ParsedCommand {
 
 	public void setEventDetails(Event eventDetails) {
 		this.eventDetails = eventDetails;
+	}
+	
+	public void setCommand(Command command){
+		this.command = command;
 	}
 }
