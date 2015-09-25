@@ -112,5 +112,13 @@ public class MainLogicTest {
 		}
 		assertTrue("should only have \"viewDetails\"", isViewEvent);
 	}
+	
+	@Test
+	public void executeEventListShouldHaveAllEvent() {
+		MainLogic mainLogic = new MainLogic();
+		List<Event> eventList = mainLogic.execute("view");
+		
+		assertTrue("should have all event", eventList.size() > 1);
+	}
 
 }
