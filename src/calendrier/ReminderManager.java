@@ -5,23 +5,5 @@ import java.util.List;
 import utils.Event;
 
 public class ReminderManager {
-	public void add(Event event){
-		
-	}
-	
-	public void remove(Event event){
-		
-	}
-	
-	public void update(Event event){
-		
-	}
-	
-	public List<Event> load(){
-		return null;
-	}
-	
-	public void setStorageLocation(String path){
-		
-	}
+
 }
