@@ -1,10 +1,15 @@
 package calendrier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import utils.Event;
 
 public class EventHandler {
+	
+	public EventHandler() {
+		StorageManager manage = new StorageManager();
+	}
 	
 	public Event add(String identifier, Event event){
 		return null;
@@ -27,7 +32,8 @@ public class EventHandler {
 	}
 	
 	public List<Event> getOutstandingEvents(){
-		return null;
+		List<Event> events = new ArrayList<>();
+		return events;
 	}
 	
 	public List<Event> getFilteredEvents(Event event){
