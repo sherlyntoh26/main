@@ -13,7 +13,8 @@ public class EventHandler {
 	
 	public Event add(String identifier, Event event){
 		Event addedEvent = new Event();
-		return null;
+		addedEvent.setTitle("Add");
+		return addedEvent;
 	}
 	
 	public Event remove(String identifier, Event event){
