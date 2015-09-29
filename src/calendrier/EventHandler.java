@@ -12,6 +12,7 @@ public class EventHandler {
 	}
 	
 	public Event add(String identifier, Event event){
+		Event addedEvent = new Event();
 		return null;
 	}
 	
