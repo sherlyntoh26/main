@@ -26,7 +26,7 @@ public class EventTest {
 		calendarEnd.set(2015, 9, 21, 11, 34, 26);
 		
 		Event event = new Event();
-		event.setId("abc");
+		//event.setId("abc");
 		event.setTitle("def");
 		event.setStartDateTime(calendarStart);
 		event.setEndDateTime(calendarEnd);

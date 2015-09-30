@@ -56,7 +56,7 @@ public class EventHandlerStub extends EventHandler {
 	
 
 	@Override
-	public Event view(String identifier) {
+	public Event view(int identifier) {
 		// TODO Auto-generated method stub
 		Event viewEvent = null;
 		for(Event event : events){
