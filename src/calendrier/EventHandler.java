@@ -6,19 +6,19 @@ import utils.Event;
 
 public class EventHandler {
 	
-	public Event add(String identifier, Event event){
+	public Event add(int identifier, Event event){
 		return null;
 	}
 	
-	public Event remove(String identifier, Event event){
+	public Event remove(int identifier, Event event){
 		return null;
 	}
 	
-	public Event update(String identifier, Event event){
+	public Event update(int identifier, Event event){
 		return null;
 	}
 	
-	public Event view(String identifier){
+	public Event view(int identifier){
 		return null;
 	}
 	

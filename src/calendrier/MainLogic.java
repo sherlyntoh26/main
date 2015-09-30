@@ -28,21 +28,21 @@ public class MainLogic {
 
 		if (parsedCommand != null) {
 			if (parsedCommand.getCommand() == Command.ADD) {
-				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.add(identifier, parsedCommand.getDetails());
+				int identifier = parsedCommand.getIdentifier();
+				event = eventHandler.add(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.DELETE) {
-				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.remove(identifier, parsedCommand.getDetails());
+				int identifier = parsedCommand.getIdentifier();
+				event = eventHandler.remove(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.UPDATE) {
-				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.update(identifier, parsedCommand.getDetails());
+				int identifier = parsedCommand.getIdentifier();
+				event = eventHandler.update(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.VIEW) {
-				String identifier = parsedCommand.getIdentifier();
+				int identifier = parsedCommand.getIdentifier();
 				event = eventHandler.view(identifier);
-				if (parsedCommand.getIdentifier() != null) {
+				if (parsedCommand.getIdentifier() != 0) {
 					eventList.add(event);
 				}
 				else{

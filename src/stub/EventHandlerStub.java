@@ -12,26 +12,26 @@ public class EventHandlerStub extends EventHandler {
 	
 	public EventHandlerStub(){
 		Event deleteEvent = new Event();
-		deleteEvent.setId("deleted");
+		//deleteEvent.setId("deleted");
 		deleteEvent.setTitle("deleted");
 		deleteEvent.setPriority(Priority.LOW);
 		events.add(deleteEvent);
 		
 		Event updateEvent = new Event();
-		updateEvent.setId("updated");
+		//updateEvent.setId("updated");
 		updateEvent.setTitle("updated");
 		updateEvent.setPriority(Priority.LOW);
 		events.add(updateEvent);
 		
 		Event viewEvent = new Event();
-		viewEvent.setId("viewDetails");
+		//viewEvent.setId("viewDetails");
 		viewEvent.setTitle("viewDetails");
 		viewEvent.setPriority(Priority.HIGH);
 		events.add(viewEvent);
 	}
 	
 	@Override
-	public Event add(String identifier, Event event) {
+	public Event add(int identifier, Event event) {
 		// TODO Auto-generated method stub
 		events.add(event);
 		return event;
@@ -40,7 +40,7 @@ public class EventHandlerStub extends EventHandler {
 	
 
 	@Override
-	public Event remove(String identifier, Event event) {
+	public Event remove(int identifier, Event event) {
 		// TODO Auto-generated method stub
 		Event deletedItem = null;
 		for(Event eventItem : events){
