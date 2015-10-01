@@ -15,7 +15,7 @@ public class ParserStub extends Parser{
 		if(command.equals("add added")){
 			Event event = new Event();
 			event.setTitle("added");
-			//event.setId("added");
+			event.setId("added");
 			event.setPriority(Priority.LOW);
 			
 			parsedCommand = new ParsedCommand();
@@ -26,7 +26,7 @@ public class ParserStub extends Parser{
 		else if(command.equals("delete deleted")){
 			Event event = new Event();
 			event.setTitle("deleted");
-			//event.setId("deleted");
+			event.setId("deleted");
 			event.setPriority(Priority.LOW);
 			
 			parsedCommand = new ParsedCommand();
@@ -37,7 +37,7 @@ public class ParserStub extends Parser{
 		else if(command.equals("update updated")){
 			Event event = new Event();
 			event.setTitle("updated");
-//			event.setId("updated");
+			event.setId("updated");
 			event.setPriority(Priority.HIGH);
 			
 			parsedCommand = new ParsedCommand();

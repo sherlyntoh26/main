@@ -44,7 +44,7 @@ public class EventHandlerStub extends EventHandler {
 		// TODO Auto-generated method stub
 		Event deletedItem = null;
 		for(Event eventItem : events){
-			if(eventItem.getTitle().equals(identifier)){
+			if(eventItem.getId().equals(identifier)){
 				deletedItem = eventItem;
 				break;
 			}
@@ -60,7 +60,7 @@ public class EventHandlerStub extends EventHandler {
 		// TODO Auto-generated method stub
 		Event viewEvent = null;
 		for(Event event : events){
-			if(event.getTitle().equals(identifier)){
+			if(event.getId().equals(identifier)){
 				viewEvent = event;
 				break;
 			}
@@ -72,7 +72,7 @@ public class EventHandlerStub extends EventHandler {
 	public Event update(String identifier, Event eventDetails) {
 		// TODO Auto-generated method stub
 		for(Event eventItem : events){
-			if(eventItem.getTitle().equals(identifier)){
+			if(eventItem.getId().equals(identifier)){
 				eventItem.setPriority(eventDetails.getPriority());
 				break;
 			}
