@@ -9,14 +9,13 @@ import utils.Event;
 public class EventHandlerTest {
 
 	@Test
-	public void test() {
-		String eventTitle = "Add";
-		String identifer = "";
+	public void testAddEvent() {
+		String eventId = "ADD1";
 		Event newEvent = new Event();
 		
 		EventHandler handle = new EventHandler();
-		newEvent = handle.add("Add", newEvent);
-		assertEquals(eventTitle, newEvent.getTitle());
+		newEvent = handle.add(eventId, newEvent);
+		assertEquals(eventId, newEvent.getId());
 	}
 
 }

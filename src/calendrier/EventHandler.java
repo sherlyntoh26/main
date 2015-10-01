@@ -7,13 +7,16 @@ import utils.Event;
 
 public class EventHandler {
 	
+	StorageManager manage;
+	ArrayList<Event> events = new ArrayList<>();
+	
 	public EventHandler() {
-		StorageManager manage = new StorageManager();
+		 manage = new StorageManager();
 	}
 	
 	public Event add(String identifier, Event eventDetails){
 		Event addedEvent = new Event();
-		addedEvent.setTitle("Add");
+		addedEvent.setId(identifier);
 		return addedEvent;
 	}
 	
