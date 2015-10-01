@@ -11,6 +11,12 @@ import utils.Command;
 import utils.Event;
 import utils.ParsedCommand;
 
+/**
+ * For handling the main logic
+ * 
+ * @author yeehuipoh
+ *
+ */
 public class MainLogic {
 	private Parser parser = null;
 	private EventHandler eventHandler = null;
@@ -21,6 +27,13 @@ public class MainLogic {
 		eventHandler = new EventHandlerStub();
 	}
 
+	/**
+	 * Execute command
+	 * 
+	 * @param command
+	 *            Command string input from user
+	 * @return List of events (to be shown to user)
+	 */
 	public List<Event> execute(String command) {
 		List<Event> eventList = new ArrayList<>();
 		Event event = null;
@@ -44,14 +57,14 @@ public class MainLogic {
 				event = eventHandler.view(identifier);
 				if (parsedCommand.getIdentifier() != null) {
 					eventList.add(event);
-				}
-				else{
+				} else {
 					eventList = eventHandler.getAllEvents();
-					Collections.sort(eventList, new Comparator<Event>(){
-	                     public int compare(Event s1,Event s2){
-	                           // Write your logic here.
-	                    	 return s2.getPriority().compareTo(s1.getPriority());
-	                     }});
+					Collections.sort(eventList, new Comparator<Event>() {
+						public int compare(Event s1, Event s2) {
+							// Write your logic here.
+							return s2.getPriority().compareTo(s1.getPriority());
+						}
+					});
 				}
 			}
 		}
@@ -59,10 +72,22 @@ public class MainLogic {
 		return eventList;
 	}
 
+	/**
+	 * Get list of events
+	 * 
+	 * @return List of events
+	 */
 	public List<Event> getEvents() {
 		return eventHandler.getAllEvents();
 	}
 
+	/**
+	 * Parse command from input string
+	 * 
+	 * @param command
+	 *            input string
+	 * @return Command with details
+	 */
 	public ParsedCommand getParsedCommand(String command) {
 		if (command == null) {
 			return null;
