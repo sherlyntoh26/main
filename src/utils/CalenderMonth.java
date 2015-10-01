@@ -74,17 +74,6 @@ public class CalenderMonth {
 		}
 		return false;
 	}
-	public Boolean isDateAvaliable (int dateInfo) {
-		
-		int i ;
-
-		for (i = 0; i <date.size(); i++) {
-			if (date.get(i).getDate()==dateInfo) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	//find the index of the date in the arraylist.
 	public int returnIndex (int dateInfo){

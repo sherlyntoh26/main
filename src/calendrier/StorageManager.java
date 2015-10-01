@@ -1,5 +1,5 @@
 package calendrier;
-//import java.util.Scanner;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 //import java.util.Collections;
@@ -17,10 +17,6 @@ import utils.Priority;
 import java.util.List;
 import java.util.TimeZone;
 
-//import stub.CalenderMonth;
-//import stub.CalenderDate;
-//import stub.CalenderTime;
-//import java.io.IOException;
 
 public class StorageManager {
 	private static String fileName;
@@ -62,9 +58,11 @@ public class StorageManager {
 		remove(eventOld);
 		add(eventNew);
 	}
+	
 	public void clear(){
 		year.clear();
 	}
+	
 	public List<Event> load(){
 		int i;
 		List<Event> events = new ArrayList<>();
@@ -74,17 +72,7 @@ public class StorageManager {
 		return events;
 	}
 	
-	
-	public static String viewTask(){
-		int i;
-		String data="";
-		
-		for(i=0;i<year.size();i++){
-			data=data.concat(year.get(i).toString());
-		}
-		return data;
-	}
-	
+	//This is use to check for the content stored in List. Will remove after coding is done.
 	public String listToString(){
 		List<Event> events = new ArrayList<>();
 		String data="";
@@ -97,7 +85,7 @@ public class StorageManager {
 		return data;
 	}
 	
-	/*//update the current status that prepared for undo.
+	/*//update the current status that prepared for undo function.
 	public void updateStatus() {
 		int i, j = 0;
 		List<Event> data = new ArrayList<Event>();
@@ -114,7 +102,7 @@ public class StorageManager {
 		year.clear();
 		processInputFromFile(backup);
 	}*/
-
+	
 	public static Boolean isYearAvaliable (int info) {
 		
 		int i, size = year.size();
@@ -127,7 +115,7 @@ public class StorageManager {
 		return false;
 	}
 	
-	//it return the index for the year in arraylist.
+	//it return the index for year in the List.
 	public static int returnIndex (int info){
 		int i, index=0;
 		
@@ -139,6 +127,9 @@ public class StorageManager {
 		return index;
 	}
 	
+	/**
+	 * This method is to check for file location.
+	 */
 	public void setStorageLocation(String fileLocation) {
 		if (fileLocation.length() == 0) {
 			//printMessage(MESSAGE_ERRORFILE);
@@ -163,6 +154,35 @@ public class StorageManager {
 		//}
 	}
 	
+	/**
+	 * This method is to print the arraylist into the specified file.
+	 */
+	public void save() {
+		int i, j=0;
+		List<Event> data= new ArrayList<Event>();
+
+		try {
+			FileWriter fileWrite = new FileWriter(fileName);
+			BufferedWriter bufferWrite = new BufferedWriter(fileWrite);
+			PrintWriter fileOut = new PrintWriter(bufferWrite);
+			
+			for(i=0;i<year.size();i++){
+				data=year.get(i).getTask();
+				while (j < data.size()) {
+					fileOut.println(data.get(j).toString());
+					j++;
+				}
+			}
+			
+			fileOut.close();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+	}
+	
+	/**
+	 * This method is to read input from file.
+	 */
 	public void processFile(String fileLocation) {
 
 		fileName = fileLocation;
@@ -185,88 +205,16 @@ public class StorageManager {
 		}
 	}
 	
+	//check whether the input is empty
 	private void checkInputData() {
 		if(!inputData.isEmpty()){
 			processInputFromFile(inputData);
 		}
 	}
-	private String removeName(String input){
-		String[] splitedData = new String[2];
-		splitedData=input.split(": ", 2);
-		return splitedData[1];
-	}
-	private int[] convertDate(String input){
-		String[] splitedData = new String[6];
-		int[] date= new int[6];
-		int[] time= new int[3];
 	
-		splitedData=input.split(" ", 6);
-		date[0] = Integer.parseInt(splitedData[5]);
-		date[1] = convertMonth(splitedData[1])-1;
-		date[2] = Integer.parseInt(splitedData[2]);
-		time=convertTime(splitedData[3]);
-		date[3] = time[0];
-		date[4] = time[1];
-		date[5] = time[2];
-		
-		return date;
-	}
-	private int[] convertTime(String input){
-		String[] splitedData = new String[3];
-		int[] time= new int[3];
-		
-		splitedData=input.split(":", 3);
-		time[0] = Integer.parseInt(splitedData[0]);
-		time[1] = Integer.parseInt(splitedData[1]);
-		time[2] = Integer.parseInt(splitedData[2]);
-		return time;
-	}
-	private int convertMonth(String input){
-		switch(input){
-		case"Jan":
-			return 1;
-		case"Feb":
-			return 2;
-		case"Mar":
-			return 3;
-		case"Apr":
-			return 4;
-		case"May":
-			return 5;
-		case"Jun":
-			return 6;
-		case"Jul":
-			return 7;
-		case"Aug":
-			return 8;
-		case"Sep":
-			return 9;
-		case"Oct":
-			return 10;
-		case"Nov":
-			return 11;
-		case"Dec":
-			return 12;
-		}
-		return 0;
-	}
-	
-	private Priority determinePrior(String input){
-		switch(input){
-		case "HIGH":
-			return Priority.HIGH;
-		case "MEDIUM":
-			return Priority.MEDIUM;
-		case "VERY_LOW":
-			return Priority.VERY_LOW;
-		case "VERY_HIGH":
-			return Priority.VERY_HIGH;
-		case "LOW":
-			return Priority.LOW;
-		}
-		return Priority.MEDIUM;
-	}
-	
+	/**
+	 * This method is to convert the string file to event as well as adding it to the List.
+	 */
 	private void processInputFromFile(List<String> dataList) {
 		int i;
 		int[] startDate= new int[6], endDate= new int[6];
@@ -302,29 +250,88 @@ public class StorageManager {
 		}
 	}
 
-	/**
-	 * This method is to print the arraylist into the specified file.
-	 */
-	public void save() {
-		int i, j=0;
-		List<Event> data= new ArrayList<Event>();
-
-		try {
-			FileWriter fileWrite = new FileWriter(fileName);
-			BufferedWriter bufferWrite = new BufferedWriter(fileWrite);
-			PrintWriter fileOut = new PrintWriter(bufferWrite);
-			
-			for(i=0;i<year.size();i++){
-				data=year.get(i).getTask();
-				while (j < data.size()) {
-					fileOut.println(data.get(j).toString());
-					j++;
-				}
-			}
-			
-			fileOut.close();
-		} catch (Exception e) {
-			System.out.println(e.toString());
+	//remove the tag in string. Example: ID: abc, this method will remove ID: and return abc.
+	private String removeName(String input){
+		String[] splitedData = new String[2];
+		splitedData=input.split(": ", 2);
+		return splitedData[1];
+	}
+	
+	//convert date from string format(MM DD HH:MM:SS YY) to int array
+	private int[] convertDate(String input){
+		String[] splitedData = new String[6];
+		int[] date= new int[6];
+		int[] time= new int[3];
+	
+		splitedData=input.split(" ", 6);
+		date[0] = Integer.parseInt(splitedData[5]);
+		date[1] = convertMonth(splitedData[1])-1;
+		date[2] = Integer.parseInt(splitedData[2]);
+		time=convertTime(splitedData[3]);
+		date[3] = time[0];
+		date[4] = time[1];
+		date[5] = time[2];
+		
+		return date;
+	}
+	
+	//convert time from string format(HH:MM:SS) to int array
+	private int[] convertTime(String input){
+		String[] splitedData = new String[3];
+		int[] time= new int[3];
+		
+		splitedData=input.split(":", 3);
+		time[0] = Integer.parseInt(splitedData[0]);
+		time[1] = Integer.parseInt(splitedData[1]);
+		time[2] = Integer.parseInt(splitedData[2]);
+		return time;
+	}
+	
+	//convert string month to int
+	private int convertMonth(String input){
+		switch(input){
+		case"Jan":
+			return 1;
+		case"Feb":
+			return 2;
+		case"Mar":
+			return 3;
+		case"Apr":
+			return 4;
+		case"May":
+			return 5;
+		case"Jun":
+			return 6;
+		case"Jul":
+			return 7;
+		case"Aug":
+			return 8;
+		case"Sep":
+			return 9;
+		case"Oct":
+			return 10;
+		case"Nov":
+			return 11;
+		case"Dec":
+			return 12;
 		}
+		return 0;
+	}
+	
+	//convert string to priority data type
+	private Priority determinePrior(String input){
+		switch(input){
+		case "HIGH":
+			return Priority.HIGH;
+		case "MEDIUM":
+			return Priority.MEDIUM;
+		case "VERY_LOW":
+			return Priority.VERY_LOW;
+		case "VERY_HIGH":
+			return Priority.VERY_HIGH;
+		case "LOW":
+			return Priority.LOW;
+		}
+		return Priority.MEDIUM;
 	}
 }
