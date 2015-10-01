@@ -15,9 +15,8 @@ public class EventHandler {
 	}
 	
 	public Event add(String identifier, Event eventDetails){
-		Event addedEvent = new Event();
-		addedEvent.setId(identifier);
-		return addedEvent;
+		eventDetails.setId(identifier);
+		return eventDetails;
 	}
 	
 	public Event remove(String identifier, Event eventDetails){
