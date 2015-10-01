@@ -20,11 +20,13 @@ import utils.ParsedCommand;
 public class MainLogic {
 	private Parser parser = null;
 	private EventHandler eventHandler = null;
+	private UserInterface userInterface = null;
 
 	public MainLogic() {
 		super();
 		parser = new ParserStub();
 		eventHandler = new EventHandlerStub();
+		userInterface = new UserInterface(this);
 	}
 
 	/**
@@ -96,5 +98,13 @@ public class MainLogic {
 		} else {
 			return parser.parse(command);
 		}
+	}
+	
+	/**
+	 * Notifies user about event starting soon
+	 * @param event event that is starting soon
+	 */
+	public void notifyUser(Event event){
+		userInterface.notifyUser(event);
 	}
 }
