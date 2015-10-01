@@ -11,17 +11,17 @@ public class EventHandler {
 		StorageManager manage = new StorageManager();
 	}
 	
-	public Event add(String identifier, Event event){
+	public Event add(String identifier, Event eventDetails){
 		Event addedEvent = new Event();
 		addedEvent.setTitle("Add");
 		return addedEvent;
 	}
 	
-	public Event remove(String identifier, Event event){
+	public Event remove(String identifier, Event eventDetails){
 		return null;
 	}
 	
-	public Event update(String identifier, Event event){
+	public Event update(String identifier, Event eventDetails){
 		return null;
 	}
 	
