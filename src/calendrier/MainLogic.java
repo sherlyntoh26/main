@@ -29,15 +29,15 @@ public class MainLogic {
 		if (parsedCommand != null) {
 			if (parsedCommand.getCommand() == Command.ADD) {
 				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.add(identifier, parsedCommand.getDetails());
+				event = eventHandler.add(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.DELETE) {
 				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.remove(identifier, parsedCommand.getDetails());
+				event = eventHandler.remove(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.UPDATE) {
 				String identifier = parsedCommand.getIdentifier();
-				event = eventHandler.update(identifier, parsedCommand.getDetails());
+				event = eventHandler.update(identifier, parsedCommand.getEventDetails());
 				eventList = eventHandler.getAllEvents();
 			} else if (parsedCommand.getCommand() == Command.VIEW) {
 				String identifier = parsedCommand.getIdentifier();

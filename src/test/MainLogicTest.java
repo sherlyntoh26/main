@@ -96,49 +96,52 @@ public class MainLogicTest {
 		}
 		assertTrue("\"updated\" should have \"HIGH\" priority", isHigh);
 	}
-	
+
 	@Test
 	public void executeEventListShouldHaveOnlyOneEvent() {
 		MainLogic mainLogic = new MainLogic();
 		List<Event> eventList = mainLogic.execute("view viewDetails");
 		boolean isViewEvent = false;
 		assertTrue("should only have 1 event", eventList.size() == 1);
-		
+
 		for (Event event : eventList) {
-			if (event.getTitle().equals("viewDetails")) {
-				isViewEvent = true;
-				break;
+			if (event != null) {
+				if (event.getTitle().equals("viewDetails")) {
+					isViewEvent = true;
+					break;
+				}
 			}
 		}
 		assertTrue("should only have \"viewDetails\"", isViewEvent);
 	}
-	
+
 	@Test
 	public void executeEventListShouldHaveAllEvent() {
 		MainLogic mainLogic = new MainLogic();
 		List<Event> eventList = mainLogic.execute("view");
-		
+
 		assertTrue("should have all event", eventList.size() > 1);
-		
+
 	}
-	
+
 	@Test
 	public void executeEventListShouldBeInDecreasingPriority() {
 		MainLogic mainLogic = new MainLogic();
 		List<Event> eventList = mainLogic.execute("view");
-		
+
 		boolean isDecreasing = true;
 		Priority previousPriority = Priority.VERY_HIGH;
-		for(Event event : eventList){
-			if(event.getPriority().compareTo(previousPriority) > 0){
-				isDecreasing = false;
+		for (Event event : eventList) {
+			if (event != null) {
+				if (event.getPriority().compareTo(previousPriority) > 0) {
+					isDecreasing = false;
+				}
+				previousPriority = event.getPriority();
 			}
-			previousPriority = event.getPriority();
 		}
-		
+
 		assertTrue("should be in decreasing priority", isDecreasing);
-		
+
 	}
-	
 
 }
