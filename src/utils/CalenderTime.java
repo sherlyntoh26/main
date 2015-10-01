@@ -1,31 +1,38 @@
-package stub;
+package utils;
+import utils.Event;
 
 public class CalenderTime{
 	private Boolean avalibility;
-	private String task;
+	private Event event;
 	
 	public CalenderTime(){}
 	public CalenderTime(Boolean input){
 		this.avalibility=input;
 	}
-	public void setTime(Boolean input, String info){
+	public void setTime(Boolean input, Event event){
 		setTimeSlot(input);
-		setTask(info);
+		setTask(event);
 	}
 	public void setTimeSlot(Boolean input){
 		this.avalibility = input;
 	}
-	public void setTask(String input){
-		this.task = input;
+	public void setTask(Event event){
+		this.event = event;
 	}
 	public String getTask(){
-		return task;
+		return event.getTitle();
+	}
+	public Event getEvent(){
+		return event;
+	}
+	public String getTaskID(){
+		return event.getId();
 	}
 	public Boolean getTimeSlot(){
 		return avalibility;
 	}
 	public void clear(){
 		avalibility=false;
-		task="";
+		event=null;
 	}
 }

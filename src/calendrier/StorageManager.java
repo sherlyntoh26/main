@@ -1,6 +1,7 @@
 package calendrier;
 //import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Calendar;
 //import java.util.Collections;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,7 +10,13 @@ import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import stub.CalenderYear;
+import utils.CalenderYear;
+import utils.Event;
+import utils.Priority;
+
+import java.util.List;
+import java.util.TimeZone;
+
 //import stub.CalenderMonth;
 //import stub.CalenderDate;
 //import stub.CalenderTime;
@@ -17,64 +24,57 @@ import stub.CalenderYear;
 
 public class StorageManager {
 	private static String fileName;
-	private static ArrayList<String> inputData;
+	private static List<String> inputData;
 	private static String line;
 	private static ArrayList<CalenderYear> year;
-	private static ArrayList<String> backup;
+
+	//private static List<String> backup;
 	//static CalenderYear name;
 	
 	public StorageManager(){
 		year= new ArrayList<CalenderYear>();
-		backup= new ArrayList<String>();
+		//backup= new ArrayList<String>();
 	}
 	
-	public void addTask(int numYear, String numMonth, int numDate, int timeStart, int timeEnd, String task){
+	@SuppressWarnings("deprecation")
+	public void add(Event event){
 		int index;
-		
-		updateStatus();
-		if(!isYearAvaliable(numYear)){
-			year.add(new CalenderYear(numYear));
+
+		//updateStatus();
+		if(!isYearAvaliable(event.getStartDateTime().getTime().getYear())){
+			year.add(new CalenderYear(event));
 		}
-		index= returnIndex(numYear);
-		addMonth(index, numMonth, numDate, timeStart, timeEnd, task);
+		else{
+			index= returnIndex(event.getStartDateTime().getTime().getYear());
+			year.get(index).addMonth(event);
+		}
 	}
-	public void deleteTask(int numYear, String numMonth, int numDate,int timeStart, int timeEnd){
-		int index=returnIndex(numYear);
-		updateStatus();
-		year.get(index).getMonth(numMonth).getDate(numDate).deleteTask(timeStart, timeEnd);
+	
+	@SuppressWarnings("deprecation")
+	public void remove(Event event){	
+		int index=returnIndex(event.getStartDateTime().getTime().getYear());
+		//updateStatus();
+		year.get(index).getMonth(event.getStartDateTime().getTime().getMonth()).getDate(event.getStartDateTime().getTime().getDate()).deleteTask(event);
 	}
-	public void deleteDayTask(int numYear, String numMonth, int numDate){
-		int index=returnIndex(numYear);
-		updateStatus();
-		year.get(index).getMonth(numMonth).getDate(numDate).clear();
+	
+	public void update(Event eventOld, Event eventNew){
+		//updateStatus();
+		remove(eventOld);
+		add(eventNew);
 	}
-	public void deleteMonthTask(int numYear, String numMonth){
-		int index=returnIndex(numYear);
-		updateStatus();
-		year.get(index).getMonth(numMonth).clear();
-	}
-	public void deleteYearTask(int numYear){
-		int index=returnIndex(numYear);
-		updateStatus();
-		year.get(index).clear();
-	}
-	public void deleteAllTask(){
+	public void clear(){
 		year.clear();
 	}
-	public void editTask(int numYear, String numMonth, int numDate,int timeStart, int timeEnd){
-		int index=returnIndex(numYear);
-		
-		updateStatus();
-		if(!year.get(index).getMonth(numMonth).getDate(numDate).checkTimeSlot(timeStart, timeEnd)){
-			year.get(index).getMonth(numMonth).getDate(numDate).updateTime(timeStart,timeEnd);
+	public List<Event> load(){
+		int i;
+		List<Event> events = new ArrayList<>();
+		for(i=0;i<year.size();i++){
+			events.addAll(year.get(i).getTask());
 		}
+		return events;
 	}
-	public void editTask(int numYear, String numMonth, int numDate,int timeStart, int timeEnd, String task){
-		int index=returnIndex(numYear);
-		
-		updateStatus();
-		year.get(index).getMonth(numMonth).getDate(numDate).updateTask(timeStart, timeEnd, task);
-	}
+	
+	
 	public static String viewTask(){
 		int i;
 		String data="";
@@ -84,56 +84,36 @@ public class StorageManager {
 		}
 		return data;
 	}
-	public static String viewYearTask(int numYear){
-		int index=returnIndex(numYear);
+	
+	public String listToString(){
+		List<Event> events = new ArrayList<>();
 		String data="";
+		events=load();
+		int i;
 		
-		if(year.size()>0){
-			data=year.get(index).toString();
-		}
-		
-		return data;
-	}
-	public static String viewMonthTask(int numYear, String numMonth){
-		int index=returnIndex(numYear);
-		String data="";
-		
-		if(year.size()>0){
-			data =year.get(index).getMonth(numMonth).toString();
+		for(i=0;i<events.size();i++){
+			data=data.concat(events.get(i).toString()+ "\n");
 		}
 		return data;
-	}
-	public static String viewDayTask(int numYear, String numMonth, int numDate){
-		int index=returnIndex(numYear);
-		String data="";
-		
-		if(year.size()>0){
-			data = year.get(index).getMonth(numMonth).getDate(numDate).toString();
-		}
-		return data;
-	}
-	public static void addMonth(int index, String month, int day, int timeStart, int timeEnd, String task){
-		year.get(index).addMonth(month, day, timeStart, timeEnd, task);
 	}
 	
-	//update the current status that prepared for undo.
-	public void updateStatus(){
-		int i,j=0;
-		ArrayList<String> data= new ArrayList<String>();
+	/*//update the current status that prepared for undo.
+	public void updateStatus() {
+		int i, j = 0;
+		List<Event> data = new ArrayList<Event>();
 		backup.clear();
-		for(i=0;i<year.size();i++){
-			data=year.get(i).toArrayList();
+		for (i = 0; i < year.size(); i++) {
+			data = year.get(i).getTask();
 			while (j < data.size()) {
-				backup.add(data.get(j));
+				backup.add(data.get(j).toString());
 				j++;
 			}
 		}
 	}
-	
 	public void undo(){
 		year.clear();
 		processInputFromFile(backup);
-	}
+	}*/
 
 	public static Boolean isYearAvaliable (int info) {
 		
@@ -159,7 +139,7 @@ public class StorageManager {
 		return index;
 	}
 	
-	public void checkForFile(String fileLocation) {
+	public void setStorageLocation(String fileLocation) {
 		if (fileLocation.length() == 0) {
 			//printMessage(MESSAGE_ERRORFILE);
 			System.out.println("Cannot detect the specific file!");
@@ -201,7 +181,7 @@ public class StorageManager {
 			checkInputData();
 		} catch (Exception e) {
 			System.out.println("Error while reading file: " + e.getMessage());
-			System.exit(0);
+			//System.exit(0);
 		}
 	}
 	
@@ -210,21 +190,115 @@ public class StorageManager {
 			processInputFromFile(inputData);
 		}
 	}
-
-	private void processInputFromFile(ArrayList<String> dataList) {
-		int i, year, day, timeStart, timeEnd;
-		String task, month;
+	private String removeName(String input){
+		String[] splitedData = new String[2];
+		splitedData=input.split(": ", 2);
+		return splitedData[1];
+	}
+	private int[] convertDate(String input){
 		String[] splitedData = new String[6];
+		int[] date= new int[6];
+		int[] time= new int[3];
+	
+		splitedData=input.split(" ", 6);
+		date[0] = Integer.parseInt(splitedData[5]);
+		date[1] = convertMonth(splitedData[1])-1;
+		date[2] = Integer.parseInt(splitedData[2]);
+		time=convertTime(splitedData[3]);
+		date[3] = time[0];
+		date[4] = time[1];
+		date[5] = time[2];
+		
+		return date;
+	}
+	private int[] convertTime(String input){
+		String[] splitedData = new String[3];
+		int[] time= new int[3];
+		
+		splitedData=input.split(":", 3);
+		time[0] = Integer.parseInt(splitedData[0]);
+		time[1] = Integer.parseInt(splitedData[1]);
+		time[2] = Integer.parseInt(splitedData[2]);
+		return time;
+	}
+	private int convertMonth(String input){
+		switch(input){
+		case"Jan":
+			return 1;
+		case"Feb":
+			return 2;
+		case"Mar":
+			return 3;
+		case"Apr":
+			return 4;
+		case"May":
+			return 5;
+		case"Jun":
+			return 6;
+		case"Jul":
+			return 7;
+		case"Aug":
+			return 8;
+		case"Sep":
+			return 9;
+		case"Oct":
+			return 10;
+		case"Nov":
+			return 11;
+		case"Dec":
+			return 12;
+		}
+		return 0;
+	}
+	
+	private Priority determinePrior(String input){
+		switch(input){
+		case "HIGH":
+			return Priority.HIGH;
+		case "MEDIUM":
+			return Priority.MEDIUM;
+		case "VERY_LOW":
+			return Priority.VERY_LOW;
+		case "VERY_HIGH":
+			return Priority.VERY_HIGH;
+		case "LOW":
+			return Priority.LOW;
+		}
+		return Priority.MEDIUM;
+	}
+	
+	private void processInputFromFile(List<String> dataList) {
+		int i;
+		int[] startDate= new int[6], endDate= new int[6];
+		String title, id;
+		String[] splitedData = new String[6];
+		Priority prior;
 		
 		for(i=0; i<dataList.size();i++){
-			splitedData=dataList.get(i).split(" ", 6);
-			year= Integer.parseInt(splitedData[0]);
-			month = splitedData[1];
-			day=Integer.parseInt(splitedData[2]);
-			timeStart=Integer.parseInt(splitedData[3]);
-			timeEnd=Integer.parseInt(splitedData[4]);
-			task=splitedData[5];
-			addTask(year, month, day, timeStart, timeEnd, task);
+			
+			splitedData=dataList.get(i).split(", ", 5);
+
+			id=removeName(splitedData[0]);
+			title=removeName(splitedData[1]);
+			prior=determinePrior(removeName(splitedData[4]));
+			
+			startDate=convertDate(removeName(splitedData[2]));
+			endDate=convertDate(removeName(splitedData[3]));
+			
+			Calendar calendarStart = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+			calendarStart.set(startDate[0], startDate[1], startDate[2], startDate[3], startDate[4], startDate[5]);
+			Calendar calendarEnd = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+			calendarEnd.set(endDate[0], endDate[1], endDate[2], endDate[3], endDate[4], endDate[5]);
+			
+			
+			Event event1 = new Event();
+			event1.setId(id);
+			event1.setTitle(title);
+			event1.setStartDateTime(calendarStart);
+			event1.setEndDateTime(calendarEnd);
+			event1.setPriority(prior);
+			
+			add(event1);
 		}
 	}
 
@@ -233,7 +307,7 @@ public class StorageManager {
 	 */
 	public void save() {
 		int i, j=0;
-		ArrayList<String> data= new ArrayList<String>();
+		List<Event> data= new ArrayList<Event>();
 
 		try {
 			FileWriter fileWrite = new FileWriter(fileName);
@@ -241,7 +315,7 @@ public class StorageManager {
 			PrintWriter fileOut = new PrintWriter(bufferWrite);
 			
 			for(i=0;i<year.size();i++){
-				data=year.get(i).toArrayList();
+				data=year.get(i).getTask();
 				while (j < data.size()) {
 					fileOut.println(data.get(j).toString());
 					j++;

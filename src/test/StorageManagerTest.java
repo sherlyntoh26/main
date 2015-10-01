@@ -1,124 +1,162 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import calendrier.StorageManager;
-import org.junit.Before;
+import utils.Event;
+import utils.Priority;
+
 import org.junit.Test;
 
 public class StorageManagerTest {
-	@Before
-	public void init(){
-		StorageManager rm= new StorageManager();
-		rm.checkForFile("src/calendrier/storageFile.txt") ;
-	}
+
 	@Test
 	public void checkProcessFile(){
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
+		StorageManager rm= new StorageManager();
+		rm.setStorageLocation("src/calendrier/storageFile.txt") ;
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, \nid: abc, title: def, startDateTime: Tue Oct 20 18:33:25 SGT 2015, endDateTime: Wed Oct 21 19:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
 	}
 	
 	@Test
-	public void checkSaveFile(){
+	public void testSave() {
 		StorageManager rm= new StorageManager();
-		rm.deleteAllTask();
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
+		rm.setStorageLocation("src/calendrier/storageFile.txt") ;
+		rm.clear();
+		Calendar calendarStart = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart.set(2015, 9, 20, 10, 33, 25);
+		Calendar calendarEnd = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd.set(2015, 9, 21, 11, 34, 26);
+		
+		Event event = new Event();
+		event.setId("abc");
+		event.setTitle("def");
+		event.setStartDateTime(calendarStart);
+		event.setEndDateTime(calendarEnd);
+		event.setPriority(Priority.MEDIUM);
+		//assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, ", event.toString());
+		rm.add(event);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+		
+		Calendar calendarStart1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart1.set(2015, 9, 20, 18, 33, 25);
+		Calendar calendarEnd1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd1.set(2015, 9, 21, 19, 34, 26);
+		
+		Event event1 = new Event();
+		event1.setId("abc");
+		event1.setTitle("def");
+		event1.setStartDateTime(calendarStart1);
+		event1.setEndDateTime(calendarEnd1);
+		event1.setPriority(Priority.MEDIUM);
+		//assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, ", event.toString());
+		rm.add(event1);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, \nid: abc, title: def, startDateTime: Tue Oct 20 18:33:25 SGT 2015, endDateTime: Wed Oct 21 19:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
 		rm.save();
 	}
-	
+
 	@Test
-	public void checkAdd(){
+	public void testAdd() {
 		StorageManager rm= new StorageManager();
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-	}
-	@Test
-	public void checkAddRepeated(){
-		StorageManager rm= new StorageManager();
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		//rm.addTask(2015, "Jan", 1, 1130, 1200, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-	}
-	@Test
-	public void checkView(){
-		StorageManager rm= new StorageManager();
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		rm.addTask(2015, "Feb", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2016, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 1 130 1130 Apple iPad!\n", StorageManager.viewYearTask(2015));
-		assertEquals("Check", "Feb 1 130 1130 Apple iPad!\n", StorageManager.viewMonthTask(2015, "Feb"));
-		assertEquals("Check", "1230 1500 Apple MacBook!\n1630 1800 Apple MacBook!\n", StorageManager.viewDayTask(2015, "Jan" , 1));
-		assertEquals("Check", "Jan 1 1230 1500 Apple MacBook!\nJan 1 1630 1800 Apple MacBook!\n", StorageManager.viewMonthTask(2015, "Jan"));
-		assertEquals("Check", "2016 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2016));
-		assertEquals("Check", "Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewMonthTask(2016, "Feb"));
-		assertEquals("Check", "2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 1 130 1130 Apple iPad!\n2016 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewTask());
-	}
-	@Test
-	public void checkDelete(){
-		StorageManager rm= new StorageManager();
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteTask(2015, "Jan", 1, 1630, 1800);
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.addTask(2015, "Jan", 2, 130, 1130, "Apple iPad!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 2 130 1130 Apple iPad!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteDayTask(2015, "Jan", 1);
-		assertEquals("Check", "2015 Jan 2 130 1130 Apple iPad!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteMonthTask(2015, "Jan");
-		assertEquals("Check", "2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteYearTask(2015);
-		assertEquals("Check", "", StorageManager.viewYearTask(2015));
-	}
-	
-	@Test
-	public void checkUpdate(){
-		StorageManager rm= new StorageManager();
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.editTask(2015, "Feb",11 ,1100, 1800, "Bose SoundLink Mini!");
-		assertEquals("Check", "2015 Feb 11 1100 1800 Bose SoundLink Mini!\n", StorageManager.viewYearTask(2015));
-		rm.editTask(2015, "Feb",11 ,900, 1800);
-		assertEquals("Check", "2015 Feb 11 900 1800 Bose SoundLink Mini!\n", StorageManager.viewYearTask(2015));
-	}
-	
-	@Test
-	public void checkUndo(){
-		StorageManager rm= new StorageManager();
+		Calendar calendarStart = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart.set(2015, 9, 20, 10, 33, 25);
+		Calendar calendarEnd = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd.set(2015, 9, 21, 11, 34, 26);
 		
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.undo();
-		assertEquals("Check", "", StorageManager.viewYearTask(2015));
-		rm.addTask(2015, "Jan", 1, 1230, 1500, "Apple MacBook!");
-		assertEquals("Check", "2015 Jan 1 1230 1500 Apple MacBook!\n", StorageManager.viewYearTask(2015));
-		rm.addTask(2015, "Jan", 1, 1630, 1800, "Apple MacBook!");
-		rm.addTask(2015, "Jan", 1, 130, 1130, "Apple iPad!");
-		rm.addTask(2015, "Feb", 11, 1100, 1800, "Apple iPhone!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 1 1630 1800 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteTask(2015, "Jan", 1, 1630, 1800);
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.addTask(2015, "Jan", 2, 130, 1130, "Apple iPad!");
-		assertEquals("Check", "2015 Jan 1 130 1130 Apple iPad!\n2015 Jan 1 1230 1500 Apple MacBook!\n2015 Jan 2 130 1130 Apple iPad!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteDayTask(2015, "Jan", 1);
-		assertEquals("Check", "2015 Jan 2 130 1130 Apple iPad!\n2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteMonthTask(2015, "Jan");
-		assertEquals("Check", "2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteMonthTask(2015, "Jan");
-		assertEquals("Check", "2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
-		rm.deleteYearTask(2015);
-		assertEquals("Check", "", StorageManager.viewYearTask(2015));
-		rm.undo();
-		assertEquals("Check", "2015 Feb 11 1100 1800 Apple iPhone!\n", StorageManager.viewYearTask(2015));
+		Event event = new Event();
+		event.setId("abc");
+		event.setTitle("def");
+		event.setStartDateTime(calendarStart);
+		event.setEndDateTime(calendarEnd);
+		event.setPriority(Priority.MEDIUM);
+		//assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, ", event.toString());
+		rm.add(event);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+		
+		Calendar calendarStart1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart1.set(2015, 9, 20, 18, 33, 25);
+		Calendar calendarEnd1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd1.set(2015, 9, 21, 19, 34, 26);
+		
+		Event event1 = new Event();
+		event1.setId("abc");
+		event1.setTitle("def");
+		event1.setStartDateTime(calendarStart1);
+		event1.setEndDateTime(calendarEnd1);
+		event1.setPriority(Priority.MEDIUM);
+		//assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, ", event.toString());
+		rm.add(event1);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Wed Oct 21 11:34:26 SGT 2015, priority: MEDIUM, \nid: abc, title: def, startDateTime: Tue Oct 20 18:33:25 SGT 2015, endDateTime: Wed Oct 21 19:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+	}
+	
+	@Test
+	public void testDelete(){
+		StorageManager rm= new StorageManager();
+		Calendar calendarStart = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart.set(2015, 9, 20, 10, 33, 25);
+		Calendar calendarEnd = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd.set(2015, 9, 20, 11, 34, 26);
+		
+		Event event = new Event();
+		event.setId("abc");
+		event.setTitle("def");
+		event.setStartDateTime(calendarStart);
+		event.setEndDateTime(calendarEnd);
+		event.setPriority(Priority.MEDIUM);
+		rm.add(event);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Tue Oct 20 11:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+		
+		Calendar calendarStart1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart1.set(2015, 9, 20, 18, 33, 25);
+		Calendar calendarEnd1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd1.set(2015, 9, 20, 19, 34, 26);
+		
+		Event event1 = new Event();
+		event1.setId("abc");
+		event1.setTitle("def");
+		event1.setStartDateTime(calendarStart1);
+		event1.setEndDateTime(calendarEnd1);
+		event1.setPriority(Priority.MEDIUM);
+		
+		rm.add(event1);
+		rm.remove(event1);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Tue Oct 20 11:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+		rm.remove(event);
+		assertEquals("", rm.listToString());
+	}
+	
+	@Test
+	public void testUpdate(){
+		StorageManager rm= new StorageManager();
+		Calendar calendarStart = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart.set(2015, 9, 20, 10, 33, 25);
+		Calendar calendarEnd = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd.set(2015, 9, 20, 11, 34, 26);
+		
+		Event event = new Event();
+		event.setId("abc");
+		event.setTitle("def");
+		event.setStartDateTime(calendarStart);
+		event.setEndDateTime(calendarEnd);
+		event.setPriority(Priority.MEDIUM);
+		rm.add(event);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 10:33:25 SGT 2015, endDateTime: Tue Oct 20 11:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
+		
+		Calendar calendarStart1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarStart1.set(2015, 9, 20, 18, 33, 25);
+		Calendar calendarEnd1 = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
+		calendarEnd1.set(2015, 9, 20, 19, 34, 26);
+		
+		Event event1 = new Event();
+		event1.setId("abc");
+		event1.setTitle("def");
+		event1.setStartDateTime(calendarStart1);
+		event1.setEndDateTime(calendarEnd1);
+		event1.setPriority(Priority.MEDIUM);
+		
+		rm.update(event, event1);
+		assertEquals("id: abc, title: def, startDateTime: Tue Oct 20 18:33:25 SGT 2015, endDateTime: Tue Oct 20 19:34:26 SGT 2015, priority: MEDIUM, \n", rm.listToString());
 	}
 }
