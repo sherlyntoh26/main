@@ -17,7 +17,6 @@ public class EventHandler {
 	public Event add(String identifier, Event eventDetails){
 		Event newEvent = new Event();
 		
-		
 		// The following seem redundant, as the event is created in the parser
 		newEvent.setId(identifier);
 		newEvent.setTitle(eventDetails.getTitle());
@@ -28,10 +27,12 @@ public class EventHandler {
 		newEvent.setAddRecurring(eventDetails.getAddRecurring());
 		newEvent.setAddTaskDescription(eventDetails.getAddTaskDescription());
 		
+		manage.add(newEvent);
 		return newEvent;
 	}
 	
 	public Event remove(String identifier, Event eventDetails){
+		manage.remove(eventDetails);
 		return null;
 	}
 	

@@ -56,5 +56,25 @@ public class EventHandlerTest {
 		assertEquals(recurring, newEvent.getAddRecurring());
 		assertEquals(description, newEvent.getAddTaskDescription());
 	}
-
+	
+//	@Test
+//	public void testUndoEvent() {
+//		
+//	}
+	
+	@Test
+	public void testRemoveEvent() {
+		fail();
+	}
+	
+//	@Test
+//	public void testUpdateEvent() {
+//		
+//	}
+	
+//	@Test
+//	public void testView() {
+//		
+//	}
+	
 }
