@@ -15,8 +15,20 @@ public class EventHandler {
 	}
 	
 	public Event add(String identifier, Event eventDetails){
-		eventDetails.setId(identifier);
-		return eventDetails;
+		Event newEvent = new Event();
+		
+		
+		// The following seem redundant, as the event is created in the parser
+		newEvent.setId(identifier);
+		newEvent.setTitle(eventDetails.getTitle());
+		newEvent.setStartDateTime(eventDetails.getStartDateTime());
+		newEvent.setEndDateTime(eventDetails.getEndDateTime());
+		newEvent.setPriority(eventDetails.getPriority());
+		newEvent.setAddLocation(eventDetails.getAddLocation());
+		newEvent.setAddRecurring(eventDetails.getAddRecurring());
+		newEvent.setAddTaskDescription(eventDetails.getAddTaskDescription());
+		
+		return newEvent;
 	}
 	
 	public Event remove(String identifier, Event eventDetails){

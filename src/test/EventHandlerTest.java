@@ -17,12 +17,13 @@ public class EventHandlerTest {
 	@Test
 	public void testAddEvent() {
 		
+		// simulating calendar inputs from a command?
 		Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("GMT+8:00"));
 		startDate.set(2015, 9, 20, 10, 33, 25);
 		Calendar endDate = Calendar.getInstance();
 		endDate.set(2015, 9, 21, 11, 34, 26);
 
-		// simulating strings from a parsed command
+		// simulating inputs from a parsed command
 		String title = "testAdd";
 		String location =  "Holland Village";
 		String eventId = "ADD1";
@@ -41,9 +42,7 @@ public class EventHandlerTest {
 		newEvent.setAddRecurring(recurring);
 		newEvent.setAddTaskDescription(description);
 		
-		// Print out event to see if it works
-		System.out.println(newEvent.toString());
-		
+		// Create EventHandler()
 		EventHandler handle = new EventHandler();
 		newEvent = handle.add(eventId, newEvent);
 		
