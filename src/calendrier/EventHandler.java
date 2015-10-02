@@ -28,11 +28,13 @@ public class EventHandler {
 		newEvent.setAddTaskDescription(eventDetails.getAddTaskDescription());
 		
 		manage.add(newEvent);
+		events.add(newEvent);
 		return newEvent;
 	}
 	
 	public Event remove(String identifier, Event eventDetails){
 		manage.remove(eventDetails);
+		events.remove(eventDetails);
 		return null;
 	}
 	
@@ -45,7 +47,7 @@ public class EventHandler {
 	}
 	
 	public List<Event> getAllEvents(){
-		return null;
+		return events;
 	}
 	
 	public List<Event> getOutstandingEvents(){

@@ -55,6 +55,7 @@ public class EventHandlerTest {
 		assertEquals(location, newEvent.getAddLocation());
 		assertEquals(recurring, newEvent.getAddRecurring());
 		assertEquals(description, newEvent.getAddTaskDescription());
+		assertTrue(handle.getAllEvents().contains(newEvent));
 	}
 	
 //	@Test
